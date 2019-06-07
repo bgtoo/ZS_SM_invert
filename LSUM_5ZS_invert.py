@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[49]:
+# In[1]:
 
 
 import os
@@ -21,7 +21,7 @@ from keras.callbacks import ReduceLROnPlateau
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[177]:
+# In[3]:
 
 
 #train_data = pd.read_csv('../../ZSdata/train_data_01_11_2018_norm.csv')
@@ -60,8 +60,8 @@ new_train_data = train_data[predictors]
 target_data = train_data[target]
 pred_y_data = pred_data[target]
 
-Xmin = min(np.min(new_train_data))
-Xmax = max(np.max(new_train_data))
+Nmin = min(np.min(target_data))
+Nmax = max(np.max(target_data))
 
 target_data = (target_data-Nmin)/(Nmax-Nmin)
 
@@ -73,19 +73,19 @@ indim = X_train.shape[1]
 outdim = y_train.shape[1]
 
 
-# In[178]:
+# In[4]:
 
 
-def setupSM(idim=indim, odim = outdim, units=8):
+def setupSM(idim=indim, odim = outdim, units=40):
     model = Sequential()
     model.add(Dense(units=units, input_dim=idim, activation='relu')) 
-    model.add(Dropout(0.0))
+    model.add(Dropout(0.5))
     model.add(Dense(units=units, input_dim=idim, activation='tanh')) 
     model.add(Dense(units=outdim, activation= 'linear'))
     return model
 
 
-# In[179]:
+# In[5]:
 
 
 optmiser = Adam(lr=0.005, beta_1=0.9, beta_2=0.999, epsilon=0.00001, decay=0.0000001)
@@ -100,7 +100,7 @@ hist = SM.fit(x=X_train, y=y_train,
         validation_data=(X_test, y_test))
 
 
-# In[180]:
+# In[6]:
 
 
 # summarize history for loss
@@ -122,7 +122,7 @@ plt.grid()
 plt.show()
 
 
-# In[181]:
+# In[7]:
 
 
 temp_preds = SM.predict(pred_data[predictors])
@@ -161,7 +161,7 @@ for i in range(test_preds.shape[1]):
 
 
 
-# In[182]:
+# In[8]:
 
 
 leg = [item[14:-11] for item in target]
@@ -196,7 +196,7 @@ for j in range(indim):
     plt.show()
 
 
-# In[176]:
+# In[10]:
 
 
 # ================ Invert network ========
